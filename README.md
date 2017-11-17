@@ -82,3 +82,34 @@ cnpm install
 |-- index.html                     // 入口页面
 |-- package.json                   // 项目基本信息
 ```
+
+## 引入`Element-ui`
+
+```js
+npm install element-ui --save
+```
+
+在main.js中写入以下内容：
+
+```js
+import Vue from 'vue'
+import App from './App'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import router from './router'
+
+Vue.config.productionTip = false
+
+Vue.use(ElementUI)
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  render: h => h(App),
+  router,
+  template: '<App/>',
+  components: { App }
+})
+```
+
+> 设置 `Vue.config.productionTip = false` 来关闭生产模式下给出的提示
