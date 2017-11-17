@@ -113,3 +113,31 @@ new Vue({
 ```
 
 > 设置 `Vue.config.productionTip = false` 来关闭生产模式下给出的提示
+
+## `vue` 组件按需引用，`vue-router`懒加载，`vue`打包优化，加载动画
+
+当SPA变得复杂的时候，使用`vue-cli`构建的项目，在默认情况下，执行`npm run build`**会将所有`js`代码打包成一个整体**就会变得**臃肿**，从而影响页面的加载。为此，我们把不同路由对应的组件，**分割成不同的代码块**，然后路由被访问的时候加载相应的组件而不是全部组件，这样效率就会提高。
+
+结合vue-router的[异步组件](https://router.vuejs.org/zh-cn/advanced/lazy-loading.html)和webpack的[代码分离](https://doc.webpack-china.org/guides/code-splitting/)就可以实现路由组件的懒加载。
+
+```js
+//正常写法
+import login from '@/component/login';
+import manage from '@/page/manage';
+import home from '@/page/home';
+import addShop from '@/page/addShop';
+import addGoods from '@/page/addGoods';
+```
+
+```js
+// 路由组件的懒加载
+const login = r => {
+  require.ensure([],() => {
+    r(require('@/component/login.vue')),'login'
+  })
+};
+const manage = r => require.ensure([], () => r(require('@/page/manage')), 'manage');
+const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
+const addShop = r =>require.ensure([], () => r(require('@/page/addShop')),'addShop');
+const addGoods = r => require.ensure([], () => r(require('@/page/addGoods')),'addGoods');
+```
